@@ -17,7 +17,7 @@ class ChatController extends Controller
 
   public function getUsers(Request $request)
   {
-    $getUsers = User::get();
+    $getUsers = User::get()->where('id','!=', Auth::user()->id);
     $html = View::make('chat._user-list', ['users' => $getUsers])->render();
     return response()->json(['success' => true, 'html' => $html]);
   }
@@ -49,4 +49,22 @@ class ChatController extends Controller
       $query->where('from_id', $conversationUserId)->where('to_id', $loggedInUserId);
     })->orderBy('created_at', 'asc')->get();
   }
+
+
+  public function sendMessage(Request $request)
+    {
+        try {
+            $post = $request->all();
+            UserConversation::create($post);
+            return response()->json(['success' => true, 'message' => 'message sent successfully']);
+        } catch (\Exception $e) {
+            return response()->json(['success' => false, 'message' => $e->getMessage()]);
+        }
+    }
+
+
 }
+
+
+
+

@@ -65,8 +65,26 @@
                     </div>
                 @endif
             @endforeach
+            
         </div>
+        
     @else
-        <div>No conversion found</div>
+    <div class="chat-messages p-4" id="no-conversion">
+       
+                     No Conversession found
+        
+    </div>
     @endif
+</div>
+<div class="flex-grow-0 py-3 px-4 border-top">
+    <form class="input-group" action="javascript:void(0)" id="chating-form" method="POST"
+        onsubmit="sendMessage('message')" enctype="multipart/form-data">
+        @csrf
+        <input type="hidden" name="from_id" value="{{ auth()->user()->id }}">
+        <input type="hidden" name="to_id" value="{{ $userDetails[0]->id}}">
+        <input type="hidden" name="chat_type" value="text-chat">
+        <input type="text" class="form-control" name="message" id="message-input" placeholder="Type a message">
+
+        <button class="btn btn-primary">Send</button>
+    </form>
 </div>
